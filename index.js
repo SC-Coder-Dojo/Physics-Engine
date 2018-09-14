@@ -50,9 +50,9 @@ function control(obj){
             // w
             obj.yv -= obj.speedinc;
         }
-        if(keymap[65]){
-            // a
-            obj.xv -= obj.speedinc;
+        if(keymap[68]){
+            // d
+            obj.xv += obj.speedinc;
         }
     }
     
@@ -61,9 +61,9 @@ function control(obj){
             // s
             obj.yv += obj.speedinc;
         }
-        if(keymap[68]){
-            // d
-            obj.xv += obj.speedinc;
+        if(keymap[65]){
+            // a
+            obj.xv -= obj.speedinc;
         }
     }
     
@@ -75,6 +75,12 @@ function checkColision(obj1, obj2){
             return true;
         }
     return false;
+}
+
+function setGlobalFriction(friction = 0.95){
+    for(var i = 0; i < Object.keys(objects).length; i++){
+        objects[i].friction = friction;
+    }
 }
 
 var keymap = {};
