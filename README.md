@@ -20,3 +20,4 @@ e.g
 ```javascript
 objects[0].cancontrol = true;
 ```
+Then you can use the `W A S D` keys to control all objects with the `cancontrol` atribute set to `true`
