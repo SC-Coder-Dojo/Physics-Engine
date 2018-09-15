@@ -7,6 +7,12 @@ This is a basic WIP physics engine built in javascript.
 Open JS console, then type init(); and run the command.
 Then to control objects look at Controling Objects
 
+## Create Custom Objects (RECT)
+Open JS console, then type:
+```javascript
+objects[Object.key(objects).length] = gameObjectRect(xpos, ypos, width, height, [optional Parameters] name, color, xv, yv, show);
+```
+
 ## Controling Objects
 Open JS console, then set your object to cancontrol = true.
 
