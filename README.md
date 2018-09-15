@@ -14,7 +14,7 @@ objects[Object.keys(objects).length] = new gameObjectRect(xpos, ypos, width, hei
 ```
 
 ## Controling Objects
-Open JS console, then set your object to cancontrol = true.
+Open JS console, then set your object to `cancontrol = true`.
 
 e.g
 ```javascript
