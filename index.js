@@ -22,11 +22,14 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
     this.drag = 0.90;
     this.friction = 0.95;
     this.cancontrol = false;
+    this.frozen = false;
     this.physicsIteration = function() {
-        this.xv *= this.friction;
-        this.yv *= this.friction;
-        this.x += this.xv;
-        this.y += this.yv;
+        if(this.frozen != true){
+            this.xv *= this.friction;
+            this.yv *= this.friction;
+            this.x += this.xv;
+            this.y += this.yv;
+        }
     }
     this.draw = function(){
         ctx = canvas.getContext("2d");
@@ -35,12 +38,10 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
         var colCheck = checkColision(this);
         if(colCheck != false){
             console.log(this.name + " Colided With " + colCheck.name);
-            colCheck.xv = this.xv /2;
-            colCheck.yv = this.yv /2;
-            this.xv /= 2;
-            this.yv /= 2;
-            this.xv = this.xv - this.xv * 2;
-            this.yv = this.yv - this.yv * 2;
+            colCheck.xv = this.xv;
+            colCheck.yv = this.yv;
+            this.xv = this.xv - this.xv;
+            this.yv = this.yv - this.yv;
             
         }
     }
