@@ -12,7 +12,7 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
     this.color = color;
     this.name = name;
     this.terminalv = 2;
-    this.speedinc = 0.3;
+    this.speedinc = 0.2;
     this.drag = 0.90;
     this.friction = 0.95;
     this.cancontrol = false;
@@ -26,13 +26,25 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
         ctx = canvas.getContext("2d");
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
+        var colCheck = checkColision(this);
+        if(colCheck != false){
+            console.log(this.name + " Colided With " + colCheck.name);
+            colCheck.xv = this.xv /2;
+            colCheck.yv = this.yv /2;
+            this.xv /= 2;
+            this.yv /= 2;
+            this.xv = this.xv - this.xv * 2;
+            this.yv = this.yv - this.yv * 2;
+            
+        }
     }
 }
 function init(){
     objects[Object.keys(objects).length] = new gameObjectRect(10 , 10, 60, 60, "TEST");
-    objects[Object.keys(objects).length] = new gameObjectRect(70, 10, 20, 20, "A NAME");
+    objects[0].cancontrol = true;
+    objects[Object.keys(objects).length] = new gameObjectRect(120, 10, 30, 30, "Oppsie");
 }
-setInterval(frame, 20);
+setInterval(frame, 30);
 
 function frame(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -68,8 +80,21 @@ function control(obj){
     }
     
 }
+function checkColision(obj1){
+    for(var i = 0; i < Object.keys(objects).length; i++){
+        obj2 = objects[i];
+        if(obj2 === obj1){
+            continue;
+        }
+        if(obj1.x < obj2.x + obj2.width && obj1.x + obj1.width > obj2.x &&
+            obj1.y < obj2.y + obj2.height && obj1.y + obj1.height > obj2.y){
+                return obj2;
+        }
+    }
+    return false;
+}
 
-function checkColision(obj1, obj2){
+function checkColisionOBJ(obj1, obj2){
     if(obj1.x < obj2.x + obj2.width && obj1.x + obj1.width > obj2.x &&
         obj1.y < obj2.y + obj2.height && obj1.y + obj1.height > obj2.y){
             return true;
