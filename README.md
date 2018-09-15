@@ -10,7 +10,7 @@ Then to control objects look at Controling Objects
 ## Create Custom Objects (RECT)
 Open JS console, then type:
 ```javascript
-objects[Object.key(objects).length] = gameObjectRect(xpos, ypos, width, height, [optional Parameters] name, color, xv, yv, show);
+objects[Object.keys(objects).length] = gameObjectRect(xpos, ypos, width, height, [optional Parameters] name, color, xv, yv, show);
 ```
 
 ## Controling Objects
