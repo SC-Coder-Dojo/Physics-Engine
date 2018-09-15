@@ -1,6 +1,12 @@
 var canvas = document.getElementById("engineDISP");
 var ctx = canvas.getContext("2d");
+var t0 = null;
+var t1 = null;
+var ttr = false;
 var objects = {};
+function dispTTR(){
+    ttr = !ttr;
+}
 function gameObjectRect(x, y, width, height, name = "undefined", color = "#000", xv = 0, yv = 0, show = true){
     this.x = x;
     this.y = y;
@@ -47,6 +53,7 @@ function init(){
 setInterval(frame, 30);
 
 function frame(){
+    t0 = performance.now();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for(var i = 0; i < Object.keys(objects).length; i++){
         if(objects[i].cancontrol){
@@ -54,6 +61,10 @@ function frame(){
         }
         objects[i].physicsIteration();
         objects[i].draw();
+    }
+    t1 = performance.now();
+    if(ttr){
+        console.log("Frame took " + (t0 - t1) + " ms to render.");
     }
 }
 function control(obj){
