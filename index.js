@@ -3,6 +3,7 @@ var ctx = canvas.getContext("2d");
 var t0 = null;
 var t1 = null;
 var ttr = false;
+var objectsCount = -1;
 var objects = {};
 function dispTTR(){
     ttr = !ttr;
@@ -41,8 +42,7 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
             colCheck.xv = this.xv;
             colCheck.yv = this.yv;
             this.xv = this.xv - this.xv;
-            this.yv = this.yv - this.yv;
-            
+            this.yv = this.yv - this.yv;   
         }
     }
 }
@@ -56,12 +56,17 @@ setInterval(frame, 30);
 function frame(){
     t0 = performance.now();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var tempObjCount = null;
     for(var i = 0; i < Object.keys(objects).length; i++){
         if(objects[i].cancontrol){
             control(objects[i]);
         }
         objects[i].physicsIteration();
         objects[i].draw();
+        tempObjCount = i;
+    }
+    if(tempObjCount != objectsCount){
+        updateObjectsBox(tempObjCount);
     }
     t1 = performance.now();
     if(ttr){
@@ -119,7 +124,25 @@ function setGlobalFriction(friction = 0.95){
         objects[i].friction = friction;
     }
 }
-
+function updateObjectsBox(newObjCount){
+    objectsCount = newObjCount;
+    document.getElementById("objects").innerHTML = "<option value='-1'>Please Select an Object ...</option>";
+    for(var i = 0; i < Object.keys(objects).length; i++){
+        console.log("Object Box update");
+        if(objects[i].name != "undefined"){
+            document.getElementById("objects").innerHTML += "<option value='" + i +"'>" + objects[i].name + " (" + i + ")</option>";
+        } else {
+            document.getElementById("objects").innerHTML += "<option value='" + i +"'>" + "Object ID: " + i + "</option>";
+        }
+    }
+}
+function updateAvalibleActions(){
+    if(document.getElementById("objects").value != -1){
+        objects[document.getElementById("objects").value].xv += -3;
+    } else {
+        document.getElementById("optionsDiv").innerHTML = "";
+    }
+}
 var keymap = {};
 
 window.addEventListener("keydown", function(e){
