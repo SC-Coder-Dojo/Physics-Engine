@@ -138,7 +138,7 @@ function updateObjectsBox(newObjCount){
 }
 function updateAvalibleActions(){
     if(document.getElementById("objects").value != -1){
-        objects[document.getElementById("objects").value].xv += -3;
+        //objects[document.getElementById("objects").value].xv += -3;
     } else {
         document.getElementById("optionsDiv").innerHTML = "";
     }
