@@ -8,6 +8,10 @@ var objects = {};
 function dispTTR(){
     ttr = !ttr;
 }
+canvas.onmouseclick = function(e){
+    var temp = getMousePos(e);
+    console.log("Mouse Pos: X " + temp.x + " Y " + temp.y);
+}
 getMousePos = function(evt, canvas = canvas){
     var rect = canvas.getBoundingClientRect();
     return {
