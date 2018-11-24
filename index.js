@@ -1,4 +1,4 @@
-canvas = document.getElementById("engineDISP");
+var canvas = document.getElementById("engineDISP");
 var ctx = canvas.getContext("2d");
 var t0 = null;
 var t1 = null;
