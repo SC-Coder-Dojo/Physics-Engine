@@ -9,10 +9,10 @@ function dispTTR(){
     ttr = !ttr;
 }
 canvas.onmouseclick = function(e){
-    var temp = getMousePos(e);
+    var temp = getMousePos(e, canvas);
     console.log("Mouse Pos: X " + temp.x + " Y " + temp.y);
 }
-getMousePos = function(evt, canvas = canvas){
+getMousePos = function(evt, canvas){
     var rect = canvas.getBoundingClientRect();
     return {
       x: evt.clientX - rect.left,
