@@ -8,6 +8,13 @@ var objects = {};
 function dispTTR(){
     ttr = !ttr;
 }
+getMousePos = function(evt, canvas = canvas){
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
+}
 function gameObjectRect(x, y, width, height, name = "undefined", color = "#000", xv = 0, yv = 0, show = true){
     this.x = x;
     this.y = y;
