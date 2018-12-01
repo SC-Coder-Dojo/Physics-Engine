@@ -5,13 +5,34 @@ var t1 = null;
 var ttr = false;
 var objectsCount = -1;
 var objects = {};
+function onload(){
+	objects[Object.keys(objects).length] = new gameObjectRect(10, 10, 50, 50, "Test OBJ", "Blue");
+	objects[0].cancontrol = true;
+}
 function dispTTR(){
     ttr = !ttr;
 }
-canvas.onmouseclick = function(e){
+canvas.addEventListener("click", function(e){
     var temp = getMousePos(e, canvas);
     console.log("Mouse Pos: X " + temp.x + " Y " + temp.y);
-}
+    var mousetempOBJ = new gameObjectRect(temp.x, temp.y, 1, 1, "Mouse", "Black");
+    mousetempOBJ.show = false;
+    var check = checkColision(mousetempOBJ);
+    if(check != false){
+    	mousetempOBJ = null;
+    	var selectID = -1;
+    	for(var i = 0; i < Object.keys(objects).length; i++){
+    		if(check == objects[i]){
+    			selectID = i;
+    			break;
+    		}
+    	}
+    	document.getElementById("objects").selectedIndex = selectID + 1;
+    }
+    else {
+    	document.getElementById("objects").selectedIndex = 0;
+    }
+});
 getMousePos = function(evt, canvas){
     var rect = canvas.getBoundingClientRect();
     return {
@@ -163,3 +184,4 @@ window.addEventListener("keydown", function(e){
 window.addEventListener("keyup", function(e){
     keymap[e.keyCode] = false;
 });
+onload();
