@@ -1,4 +1,4 @@
-# Prozel-Physics-Engine
+# Physics-Engine
 This is a basic WIP physics engine built in javascript.
 
 [Launch Engine](https://SC-Coder-Dojo.github.io/Physics-Engine/ "Launch Engine")
