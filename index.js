@@ -184,6 +184,9 @@ function updateObjectsBox(newObjCount){
         }
     }
 }
+function updateCancontrol(id = document.getElementById("objects").value){
+	objects[id].cancontrol = document.querySelector(".ccchk").checked;
+}
 function destroy(id = document.getElementById("objects").value){
 	objects[id] = null;
 	updateObjectsBox(Object.keys(objects).length);
@@ -192,7 +195,9 @@ function updateAvalibleActions(){
     if(document.getElementById("objects").value != -1){
         document.getElementById("modify").innerHTML = `
         <button onclick="destroy()">DELETE</button>
+        <input type="checkbox" id="cancon" class="ccchk" onchange="updateCancontrol()">Can Control
         `;
+        document.getElementById("cancon").checked = objects[document.getElementById("objects").value].cancontrol;
     } else {
         document.getElementById("modify").innerHTML = "";
     }
