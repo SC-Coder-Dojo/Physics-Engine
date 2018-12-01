@@ -5,12 +5,16 @@ var t1 = null;
 var ttr = false;
 var objectsCount = -1;
 var objects = {};
+var mouseSpawnsObj = false;
 function onload(){
 	objects[Object.keys(objects).length] = new gameObjectRect(10, 10, 50, 50, "Test OBJ", "Blue");
 	objects[0].cancontrol = true;
 }
 function dispTTR(){
     ttr = !ttr;
+}
+function MSPO(){
+	mouseSpawnsObj = document.querySelector(".mspochk").checked;
 }
 canvas.addEventListener("click", function(e){
     var temp = getMousePos(e, canvas);
@@ -28,9 +32,14 @@ canvas.addEventListener("click", function(e){
     		}
     	}
     	document.getElementById("objects").selectedIndex = selectID + 1;
+    	updateAvalibleActions();
     }
     else {
+    	if(mouseSpawnsObj){
+    		objects[Object.keys(objects).length] = new gameObjectRect(temp.x, temp.y, 5, 5, "Mspawn " + Object.keys(objects).length, "#e67e22");
+    	}
     	document.getElementById("objects").selectedIndex = 0;
+    	updateAvalibleActions();
     }
 });
 getMousePos = function(evt, canvas){
@@ -90,12 +99,14 @@ function frame(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     var tempObjCount = null;
     for(var i = 0; i < Object.keys(objects).length; i++){
-        if(objects[i].cancontrol){
+    	if(objects[i] != null){
+    		if(objects[i].cancontrol){
             control(objects[i]);
-        }
-        objects[i].physicsIteration();
-        objects[i].draw();
-        tempObjCount = i;
+	        }
+	        objects[i].physicsIteration();
+	        objects[i].draw();
+	        tempObjCount = i;
+    	}
     }
     if(tempObjCount != objectsCount){
         updateObjectsBox(tempObjCount);
@@ -131,6 +142,9 @@ function control(obj){
 }
 function checkColision(obj1){
     for(var i = 0; i < Object.keys(objects).length; i++){
+    	if(objects[i] == null){
+    		continue;
+    	}
         obj2 = objects[i];
         if(obj2 === obj1){
             continue;
@@ -161,18 +175,26 @@ function updateObjectsBox(newObjCount){
     document.getElementById("objects").innerHTML = "<option value='-1'>Please Select an Object ...</option>";
     for(var i = 0; i < Object.keys(objects).length; i++){
         console.log("Object Box update");
-        if(objects[i].name != "undefined"){
+        if(objects[i] != null){
+        	if(objects[i].name != "undefined"){
             document.getElementById("objects").innerHTML += "<option value='" + i +"'>" + objects[i].name + " (" + i + ")</option>";
-        } else {
-            document.getElementById("objects").innerHTML += "<option value='" + i +"'>" + "Object ID: " + i + "</option>";
+	        } else {
+	            document.getElementById("objects").innerHTML += "<option value='" + i +"'>" + "Object ID: " + i + "</option>";
+	        }
         }
     }
 }
+function destroy(id = document.getElementById("objects").value){
+	objects[id] = null;
+	updateObjectsBox(Object.keys(objects).length);
+}
 function updateAvalibleActions(){
     if(document.getElementById("objects").value != -1){
-        //objects[document.getElementById("objects").value].xv += -3;
+        document.getElementById("modify").innerHTML = `
+        <button onclick="destroy()">DELETE</button>
+        `;
     } else {
-        document.getElementById("optionsDiv").innerHTML = "";
+        document.getElementById("modify").innerHTML = "";
     }
 }
 var keymap = {};
