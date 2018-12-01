@@ -8,7 +8,13 @@ var objects = {};
 var mouseSpawnsObj = false;
 function onload(){
 	objects[Object.keys(objects).length] = new gameObjectRect(10, 10, 50, 50, "Test OBJ", "Blue");
-	objects[0].cancontrol = true;
+    objects[0].cancontrol = true;
+}
+function drawLine(x1,y1,x2,y2){
+    ctx.beginPath();
+    ctx.moveTo(x1,y1);
+    ctx.lineTo(x2,y2);
+    ctx.stroke();
 }
 function dispTTR(){
     ttr = !ttr;
@@ -36,7 +42,7 @@ canvas.addEventListener("click", function(e){
     }
     else {
     	if(mouseSpawnsObj){
-    		objects[Object.keys(objects).length] = new gameObjectRect(temp.x, temp.y, 5, 5, "Mspawn " + Object.keys(objects).length, "#e67e22");
+    		objects[Object.keys(objects).length] = new gameObjectRect(temp.x, temp.y, 10, 10, "Mspawn " + Object.keys(objects).length, "#e67e22");
     	}
     	document.getElementById("objects").selectedIndex = 0;
     	updateAvalibleActions();
@@ -72,11 +78,33 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
             this.x += this.xv;
             this.y += this.yv;
         }
+        if(this.x + this.width >= canvas.width){
+            this.xv = 0;
+            var distout = this.x + this.width - canvas.width;
+            this.x -= distout;
+        }
+        if(this.y + this.height >= canvas.height){
+            this.yv = 0;
+            var distout = this.y + this.height - canvas.height;
+            this.y -= distout;
+        }
+        if(this.x <= 0){
+            this.xv = 0;
+            var distout = 0 - this.x;
+            this.x += distout;
+        }
+        if(this.y <= 0){
+            this.yv = 0;
+            var distout = 0 - this.y;
+            this.y += distout;
+        }
     }
     this.draw = function(){
         ctx = canvas.getContext("2d");
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
+        drawLine(10,this.y, 10, this.y + this.height);
+        drawLine(this.x, 389, this.x + width, 389);
         var colCheck = checkColision(this);
         if(colCheck != false){
             console.log(this.name + " Colided With " + colCheck.name);
