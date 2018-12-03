@@ -52,7 +52,7 @@ canvas.addEventListener("click", function(e){
 });
 canvas.addEventListener("mouseover", function(e){
     var temp = getMousePos(e, canvas);
-    console.log(temp);
+    //console.log(temp);
 });
 getMousePos = function(evt, canvas){
     var rect = canvas.getBoundingClientRect();
@@ -78,6 +78,7 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
     this.cancontrol = false;
     this.frozen = false;
     this.debugAxisLines = false;
+    this.tick = 0;
     this.physicsIteration = function() {
         if(this.frozen != true){
             this.xv *= this.friction;
@@ -119,11 +120,21 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
         }
         var colCheck = checkColision(this);
         if(colCheck != false){
+            this.tick++;
+            // if(this.tick = 30){
+            //     this.x += colCheck.x + colCheck.width;
+            //     this.tick = 0;
+            // }
+            // if(this.tick >= 31){
+            //     this.x -= colCheck.width;
+            // }
             console.log(this.name + " Colided With " + colCheck.name);
             colCheck.xv = this.xv;
             colCheck.yv = this.yv;
             this.xv = this.xv - this.xv;
             this.yv = this.yv - this.yv;   
+        }else {
+            this.tick = 0;
         }
     }
 }
