@@ -6,11 +6,13 @@ var ttr = false;
 var objectsCount = -1;
 var objects = {};
 var mouseSpawnsObj = false;
+var gravity = 0.3;
 function onload(){
-	objects[Object.keys(objects).length] = new gameObjectRect(10, 10, 50, 50, "Test OBJ", "Blue");
+	objects[Object.keys(objects).length] = new gameObjectRect(10, 10, 50, 50, "Test OBJ", "#3498db");
     objects[0].cancontrol = true;
 }
-function drawLine(x1,y1,x2,y2){
+function drawLine(x1,y1,x2,y2, color = "#000"){
+    ctx.strokeStyle = color;
     ctx.beginPath();
     ctx.moveTo(x1,y1);
     ctx.lineTo(x2,y2);
@@ -48,6 +50,10 @@ canvas.addEventListener("click", function(e){
     	updateAvalibleActions();
     }
 });
+canvas.addEventListener("mouseover", function(e){
+    var temp = getMousePos(e, canvas);
+    console.log(temp);
+});
 getMousePos = function(evt, canvas){
     var rect = canvas.getBoundingClientRect();
     return {
@@ -71,12 +77,14 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
     this.friction = 0.95;
     this.cancontrol = false;
     this.frozen = false;
+    this.debugAxisLines = false;
     this.physicsIteration = function() {
         if(this.frozen != true){
             this.xv *= this.friction;
             this.yv *= this.friction;
             this.x += this.xv;
             this.y += this.yv;
+            //this.yv += gravity;
         }
         if(this.x + this.width >= canvas.width){
             this.xv = 0;
@@ -103,8 +111,12 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
         ctx = canvas.getContext("2d");
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
-        drawLine(10,this.y, 10, this.y + this.height);
-        drawLine(this.x, 389, this.x + width, 389);
+        if(this.debugAxisLines){
+            drawLine(10,this.y, 10, this.y + this.height, this.color);
+            drawLine(this.x, 389, this.x + width, 389, this.color);
+            drawLine(this.x, 10, this.x + width, 10, this.color);
+            drawLine(490, this.y, 490, this.y + this.height, this.color);
+        }
         var colCheck = checkColision(this);
         if(colCheck != false){
             console.log(this.name + " Colided With " + colCheck.name);
@@ -212,6 +224,15 @@ function updateObjectsBox(newObjCount){
         }
     }
 }
+// function applyvelocity(x = document.getElementById("applyxv").value,
+//                          y = document.getElementById("applyyv").value,
+//                           object = document.getElementById("objects").value){
+//     if(x != "" && y != "" && object != -1){
+//         console.log("Launching Object: " + object + " in X: " + x + " and Y: " + y);
+//         objects[object].xv += x;
+//         objects[object].yv += y;
+//     }
+// }
 function updateCancontrol(id = document.getElementById("objects").value){
 	objects[id].cancontrol = document.querySelector(".ccchk").checked;
 }
@@ -219,13 +240,21 @@ function destroy(id = document.getElementById("objects").value){
 	objects[id] = null;
 	updateObjectsBox(Object.keys(objects).length);
 }
+function updateDBAXIS(object = document.getElementById("objects").value){
+    objects[object].debugAxisLines = document.querySelector(".dbais").checked;
+}
 function updateAvalibleActions(){
     if(document.getElementById("objects").value != -1){
         document.getElementById("modify").innerHTML = `
         <button onclick="destroy()">DELETE</button>
-        <input type="checkbox" id="cancon" class="ccchk" onchange="updateCancontrol()">Can Control
+        <input type="checkbox" id="cancon" class="ccchk" onchange="updateCancontrol()">Can Control <br>
+        <input type="checkbox" id="debugAxisLines" class="dbais" onchange="updateDBAXIS()"> Debug Axis Lines
         `;
+        // Apply Velocity: <br>X: <input type="number" id="applyxv"><br>
+        // Y: <input type="number" id="applyyv">
+        // <button onclick="applyvelocity()">Apply</button>
         document.getElementById("cancon").checked = objects[document.getElementById("objects").value].cancontrol;
+        document.getElementById("debugAxisLines").checked = objects[document.getElementById("objects").value].debugAxisLines;
     } else {
         document.getElementById("modify").innerHTML = "";
     }
