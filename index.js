@@ -8,7 +8,7 @@ var objects = {};
 var mouseSpawnsObj = false;
 var gravity = 0.3;
 function onload(){
-	objects[Object.keys(objects).length] = new gameObjectRect(10, 10, 50, 50, "Test OBJ", "#3498db");
+	objects[Object.keys(objects).length] = new gameObjectRect(200, 10, 50, 50, "Test OBJ", "#3498db");
     objects[0].cancontrol = true;
 }
 function drawLine(x1,y1,x2,y2, color = "#000"){
@@ -114,9 +114,9 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
         ctx.fillRect(this.x, this.y, this.width, this.height);
         if(this.debugAxisLines){
             drawLine(10,this.y, 10, this.y + this.height, this.color);
-            drawLine(this.x, 389, this.x + width, 389, this.color);
+            drawLine(this.x, canvas.height - 10, this.x + width, canvas.height - 10, this.color);
             drawLine(this.x, 10, this.x + width, 10, this.color);
-            drawLine(490, this.y, 490, this.y + this.height, this.color);
+            drawLine(canvas.width - 10, this.y, canvas.width - 10, this.y + this.height, this.color);
         }
         var colCheck = checkColision(this);
         if(colCheck != false){
