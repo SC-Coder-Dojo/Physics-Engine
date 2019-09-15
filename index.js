@@ -260,16 +260,27 @@ function updateAvalibleActions(){
         <button onclick="destroy()">DELETE</button>
         <input type="checkbox" id="cancon" class="ccchk" onchange="updateCancontrol()">Can Control <br>
         <input type="checkbox" id="debugAxisLines" class="dbais" onchange="updateDBAXIS()"> Debug Axis Lines
+        <br>Apply Velocity: <br>X: <input type="number" id="applyxv"><br>
+        Y: <input type="number" id="applyyv">
+        <button onclick="applyvelocity()">Apply</button>
         `;
-        // Apply Velocity: <br>X: <input type="number" id="applyxv"><br>
-        // Y: <input type="number" id="applyyv">
-        // <button onclick="applyvelocity()">Apply</button>
+        
         document.getElementById("cancon").checked = objects[document.getElementById("objects").value].cancontrol;
         document.getElementById("debugAxisLines").checked = objects[document.getElementById("objects").value].debugAxisLines;
     } else {
         document.getElementById("modify").innerHTML = "";
     }
 }
+
+function applyvelocity() {
+    if(document.getElementById("applyxv").value != ""){
+        objects[document.getElementById("objects").value].xv += parseInt(document.getElementById("applyxv").value);
+    }
+    if(document.getElementById("applyyv").value != ""){
+        objects[document.getElementById("objects").value].yv += parseInt(document.getElementById("applyyv").value);
+    }
+}
+
 var keymap = {};
 
 window.addEventListener("keydown", function(e){
