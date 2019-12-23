@@ -109,7 +109,7 @@ function gameObjectRect(x, y, width, height, name = "undefined", color = "#000",
         }
     }
     this.draw = function(){
-        ctx = canvas.getContext("2d");
+        ctx = canvas.getContext("3d");
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
         if(this.debugAxisLines){
